@@ -468,7 +468,445 @@
         </footer>
     </div>
 
-    <!-- Main JavaScript file -->
-    <script src="PIP updates.js"></script>
+    <script>
+        // Polyfill for NodeList.forEach for older browsers
+        if (window.NodeList && !NodeList.prototype.forEach) {
+            NodeList.prototype.forEach = Array.prototype.forEach;
+        }
+
+        // Section data
+        var tsdSections = [
+            { name: "Planning & Administration", description: "No current updates." },
+            { name: "Transport Management", description: "No current updates." },
+            { name: "Project Implementation", description: "See below for ongoing and completed projects." },
+            { name: "Marine & Power Support Services", description: "No current updates." },
+            { name: "Health Safety Security & Environment", description: "No current updates." },
+            { name: "Technical Audit", description: "No current updates." },
+            { name: "Project Management Office", description: "No current updates." }
+        ];
+
+        // Project data
+        var projects = [
+            // Akosombo
+            {
+                location: "Akosombo",
+                title: "AGS SCADA",
+                progress: "Planned: 100%, Actual: 98%",
+                financial: "Certified: USD 3,144,905.86, Balance: USD 508,367.49",
+                schedule: "Apr-2019 - TBD",
+                limitations: "Difficulty in securing plant outage for outstanding work.",
+                strategy: "Awaiting approval from AGS for outstanding works.",
+                status: "active"
+            },
+            {
+                location: "Akosombo",
+                title: "Rehabilitation of Akosombo Township Roads and Storm Drains",
+                progress: "Planned: 55%, Actual: 50%",
+                financial: "Certified: USD 4,407,606.25, Balance: USD 8,531,063.92",
+                schedule: "01-Jul-24 - 30-Jun-26",
+                limitations: "Collapsing roadside drains and falling road structure during asphalt compaction.",
+                strategy: "Technical team assigned to address incidents.",
+                status: "active"
+            },
+            {
+                location: "Akosombo",
+                title: "Construction of Paediatric Ward and NICU",
+                progress: "Planned: 50%, Actual: 23%",
+                financial: "Certified: GHS 1,614,448.79, Balance: GHS 26,499,526.01",
+                schedule: "30-Jul-24 - 29-Jul-26",
+                limitations: "Delays due to utility relocation and contractor documentation issues.",
+                strategy: "Contractor tasked to increase workforce to recover time.",
+                status: "active"
+            },
+            {
+                location: "Akosombo",
+                title: "Construction of Market Pavilion, Washrooms & External Works",
+                progress: "Planned: 48%, Actual: 48%",
+                financial: "Certified: USD 924,526.77, Balance: USD 1,892,697.97",
+                schedule: "02-Nov-24 - 20-May-26",
+                limitations: "No issues.",
+                strategy: "Work ongoing.",
+                status: "active"
+            },
+            {
+                location: "Akosombo",
+                title: "Refurbishment of Akosombo Sports Stadium",
+                progress: "Planned: 48%, Actual: 35%",
+                financial: "Certified: USD 534,069.62, Balance: USD 1,238,046.91",
+                schedule: "02-Nov-24 - 20-May-26",
+                limitations: "Delay due to initial commencement issues.",
+                strategy: "Contractor to submit revised schedule by 08-Aug-25.",
+                status: "active"
+            },
+            {
+                location: "Akosombo",
+                title: "Redevelopment of Akosombo Community Center",
+                progress: "Planned: 48%, Actual: 0%",
+                financial: "Certified: USD 330,788.38, Balance: USD 2,945,980.78",
+                schedule: "02-Nov-24 - 20-May-26",
+                limitations: "Delay due to contractor's advance payment request.",
+                strategy: "Follow-up with Finance & Investment department.",
+                status: "active"
+            },
+            {
+                location: "Akosombo",
+                title: "Completion of ESD Office Complex",
+                progress: "Planned: 100%, Actual: 99%",
+                financial: "Certified: USD 3,504,719.34, Balance: USD 679,117.30",
+                schedule: "18-Jan-23 - 30-Sep-24",
+                limitations: "Ongoing defect corrections.",
+                strategy: "No action specified.",
+                status: "active"
+            },
+            {
+                location: "Akosombo",
+                title: "Akosombo Solar Street Lighting Project",
+                progress: "N/A",
+                financial: "N/A",
+                schedule: "N/A",
+                limitations: "N/A",
+                strategy: "N/A",
+                status: "defects"
+            },
+            {
+                location: "Akosombo",
+                title: "Conversion of 'Nunya' Conference Block into Hotel Rooms",
+                progress: "N/A",
+                financial: "N/A",
+                schedule: "N/A",
+                limitations: "N/A",
+                strategy: "N/A",
+                status: "defects"
+            },
+            {
+                location: "Akosombo",
+                title: "Landscaping Works on the Slipway at Akosombo",
+                progress: "N/A",
+                financial: "N/A",
+                schedule: "N/A",
+                limitations: "N/A",
+                strategy: "N/A",
+                status: "defects"
+            },
+            {
+                location: "Akosombo",
+                title: "Supply and Installation of Enhanced Security System for Akosombo and Kpong Dams",
+                progress: "N/A",
+                financial: "N/A",
+                schedule: "N/A",
+                limitations: "N/A",
+                strategy: "N/A",
+                status: "defects"
+            },
+            // Akuse
+            {
+                location: "Akuse",
+                title: "Construction of an AstroTurf football playing field",
+                progress: "N/A",
+                financial: "N/A",
+                schedule: "N/A",
+                limitations: "N/A",
+                strategy: "N/A",
+                status: "defects"
+            },
+            // Tema/Accra
+            {
+                location: "Tema/Accra",
+                title: "KTPP Outstanding Works",
+                progress: "Planned: 100%, Actual: 70%",
+                financial: "Certified: USD 476,259.65, Balance: USD 805,421.11",
+                schedule: "20-Aug-24 - 19-Apr-25",
+                limitations: "Delay due to payment issues from VRA.",
+                strategy: "Follow-ups with Finance & Investment department.",
+                status: "active"
+            },
+            {
+                location: "Tema/Accra",
+                title: "Construction of New Procurement Building in Tema",
+                progress: "Planned: 88%, Actual: 90%",
+                financial: "Certified: USD 8,634,240.18, Balance: USD 897,570.74",
+                schedule: "22-Sep-23 - 22-Sep-25",
+                limitations: "No issues.",
+                strategy: "Power supply issue resolved by redirecting from warehouse.",
+                status: "active"
+            },
+            {
+                location: "Tema/Accra",
+                title: "Construction of Fence Wall and Ancillary Works at VRA Head Office",
+                progress: "N/A",
+                financial: "N/A",
+                schedule: "N/A",
+                limitations: "N/A",
+                strategy: "N/A",
+                status: "defects"
+            },
+            // Aboadze
+            {
+                location: "Aboadze",
+                title: "Remodelling & Rehabilitation of Aboadze Oxidation Pond",
+                progress: "Planned: 100% (main), 10% (variation), Actual: 99% (main), 0% (variation)",
+                financial: "Certified: USD 2,634,703.37, Balance: USD 901,720.45",
+                schedule: "20-Aug-24 - 19-Apr-25",
+                limitations: "No power supply to Pump Station 3.",
+                strategy: "Real Estate and TTPS coordinating for solution.",
+                status: "active"
+            },
+            {
+                location: "Aboadze",
+                title: "Repair of roof leakages for selected buildings at TTPS, Aboadze",
+                progress: "N/A",
+                financial: "N/A",
+                schedule: "N/A",
+                limitations: "N/A",
+                strategy: "N/A",
+                status: "defects"
+            }
+        ];
+
+        var locations = ["Akosombo", "Akuse", "Tema/Accra", "Aboadze"];
+
+        // Section card background colors
+        function getSectionGradient(idx) {
+            var gradients = [
+                "linear-gradient(135deg, #3b82f6 0%, #1e40af 100%)",
+                "linear-gradient(135deg, #22c55e 0%, #166534 100%)",
+                "linear-gradient(135deg, #a21caf 0%, #6d28d9 100%)",
+                "linear-gradient(135deg, #ec4899 0%, #be185d 100%)",
+                "linear-gradient(135deg, #eab308 0%, #ca8a04 100%)",
+                "linear-gradient(135deg, #6366f1 0%, #312e81 100%)",
+                "linear-gradient(135deg, #06b6d4 0%, #0e7490 100%)"
+            ];
+            return gradients[idx % gradients.length];
+        }
+
+        // Section card icons
+        function getSectionIcon(idx) {
+            var iconSvgs = [
+                '<svg class="section-svg" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/></svg>',
+                '<svg class="section-svg" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path stroke-linecap="round" stroke-linejoin="round" d="M8 12l2 2 4-4"/></svg>',
+                '<svg class="section-svg" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M16 3v4M8 3v4"/></svg>',
+                '<svg class="section-svg" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>',
+                '<svg class="section-svg" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>',
+                '<svg class="section-svg" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>',
+                '<svg class="section-svg" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path stroke-linecap="round" stroke-linejoin="round" d="M8 2v4M16 2v4"/></svg>'
+            ];
+            return iconSvgs[idx % iconSvgs.length];
+        }
+
+        // Render section cards
+        function renderSectionCanvases() {
+            var mainSections = document.getElementById('mainSections');
+            mainSections.innerHTML = '';
+            tsdSections.forEach(function(section, idx) {
+                var card = document.createElement('div');
+                card.className = "section-canvas";
+                card.setAttribute('data-section', section.name);
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('role', 'button');
+                card.setAttribute('aria-label', section.name + " section");
+                card.style.background = getSectionGradient(idx);
+
+                card.innerHTML =
+                    '<div class="section-icon-bg">' + getSectionIcon(idx) + '</div>' +
+                    '<h2 class="section-title">' + section.name + '</h2>' +
+                    '<p class="section-desc">' + section.description + '</p>' +
+                    '<span class="view-details-btn">View Details</span>';
+
+                card.addEventListener('click', function() {
+                    showSectionDetails(section.name);
+                });
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        showSectionDetails(section.name);
+                    }
+                });
+
+                mainSections.appendChild(card);
+            });
+        }
+
+        function showSectionDetails(sectionName) {
+            document.getElementById('mainSections').classList.add('hidden');
+            document.getElementById('sectionDetails').classList.remove('hidden');
+            renderSectionDetails(sectionName);
+        }
+
+        function setupBackButton() {
+            var backBtn = document.getElementById('backToSections');
+            if (backBtn) {
+                backBtn.addEventListener('click', function() {
+                    document.getElementById('sectionDetails').classList.add('hidden');
+                    document.getElementById('mainSections').classList.remove('hidden');
+                    var firstSection = document.querySelector('.section-canvas');
+                    if (firstSection) firstSection.focus();
+                });
+            }
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener('DOMContentLoaded', setupBackButton);
+        } else {
+            setupBackButton();
+        }
+
+        function renderSectionDetails(sectionName) {
+            var detailsDiv = document.getElementById('sectionDetailsContent');
+            detailsDiv.innerHTML = '';
+            if (sectionName === "Project Implementation") {
+                // Status filter and location tabs
+                var filterDiv = document.createElement('div');
+                filterDiv.className = "filter-flex";
+                filterDiv.innerHTML =
+                    '<div class="status-filter-flex">' +
+                    '<label for="statusFilter" class="status-label">Status:</label>' +
+                    '<select id="statusFilter" class="status-select">' +
+                    '<option value="all">All Projects</option>' +
+                    '<option value="active">Active Projects</option>' +
+                    '<option value="defects">Defects Notification Period</option>' +
+                    '</select>' +
+                    '</div>';
+                detailsDiv.appendChild(filterDiv);
+
+                // Location tabs
+                var nav = document.createElement('nav');
+                nav.className = "location-tabs-nav";
+                nav.setAttribute('aria-label', 'Project Locations');
+                var tabsHtml = '<ul class="location-tabs-list" id="locationTabs">';
+                for (var i = 0; i < locations.length; i++) {
+                    tabsHtml += '<li class="location-tab-li">' +
+                        '<a class="location-tab-link' + (i === 0 ? ' active-location-tab' : '') + '" href="#" data-location="' + locations[i] + '" role="tab" aria-selected="' + (i === 0 ? 'true' : 'false') + '" tabindex="0">' + locations[i] + '</a>' +
+                        '</li>';
+                }
+                tabsHtml += '</ul>';
+                nav.innerHTML = tabsHtml;
+                detailsDiv.appendChild(nav);
+
+                // Project Table
+                var tableDiv = document.createElement('div');
+                tableDiv.className = "project-table-div";
+                tableDiv.innerHTML =
+                    '<table id="projectTable" class="project-table" role="table">' +
+                    '<thead>' +
+                    '<tr class="project-table-header">' +
+                    '<th scope="col">Project Title</th>' +
+                    '<th scope="col">Progress</th>' +
+                    '<th scope="col">Schedule</th>' +
+                    '<th scope="col">Limitations / Issues</th>' +
+                    '<th scope="col">Strategy / Action Plan</th>' +
+                    '<th scope="col">Status</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody id="projectTableBody"></tbody>' +
+                    '</table>';
+                detailsDiv.appendChild(tableDiv);
+
+                renderTable(locations[0], 'all');
+
+                setTimeout(function() {
+                    var locationTabs = document.querySelectorAll('.location-tab-link');
+                    for (var i = 0; i < locationTabs.length; i++) {
+                        (function(tab) {
+                            tab.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                locationTabs.forEach(function(t) {
+                                    t.classList.remove('active-location-tab');
+                                    t.setAttribute('aria-selected', 'false');
+                                });
+                                tab.classList.add('active-location-tab');
+                                tab.setAttribute('aria-selected', 'true');
+                                var location = tab.getAttribute('data-location');
+                                var statusFilter = document.getElementById('statusFilter').value;
+                                renderTable(location, statusFilter);
+                            });
+                            tab.addEventListener('keydown', function(e) {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    tab.click();
+                                }
+                            });
+                        })(locationTabs[i]);
+                    }
+
+                    var statusFilterEl = document.getElementById('statusFilter');
+                    if (statusFilterEl) {
+                        statusFilterEl.addEventListener('change', function(e) {
+                            var activeTab = document.querySelector('.location-tab-link.active-location-tab');
+                            var location = activeTab ? activeTab.getAttribute('data-location') : locations[0];
+                            renderTable(location, e.target.value);
+                        });
+                    }
+                }, 0);
+
+            } else {
+                // For other sections, show description or placeholder
+                var sectionObj = tsdSections.find(function(s) { return s.name === sectionName; });
+                detailsDiv.innerHTML =
+                    '<div class="section-desc-only">' +
+                    (sectionObj && sectionObj.description ? sectionObj.description : "No data available.") +
+                    '</div>';
+            }
+        }
+
+        function renderTable(location, statusFilter) {
+            var tableBody = document.getElementById('projectTableBody');
+            if (!tableBody) return;
+            tableBody.innerHTML = '';
+
+            var filteredProjects = projects.filter(function(p) {
+                return p.location === location && (statusFilter === 'all' || p.status === statusFilter);
+            });
+
+            if (filteredProjects.length === 0) {
+                var row = document.createElement('tr');
+                row.innerHTML = '<td colspan="6" class="no-projects-row">No projects found for the selected criteria.</td>';
+                tableBody.appendChild(row);
+                return;
+            }
+
+            filteredProjects.forEach(function(project) {
+                var statusBadge = project.status === 'active'
+                    ? '<span class="status-badge status-badge-active">Active</span>'
+                    : '<span class="status-badge status-badge-defects">Defects Notification</span>';
+
+                var limitations = project.limitations && project.limitations !== "N/A"
+                    ? project.limitations
+                    : '<span class="text-muted">None</span>';
+
+                var strategy = project.strategy && project.strategy !== "N/A"
+                    ? project.strategy
+                    : '<span class="text-muted">None</span>';
+
+                var progress = project.progress && project.progress !== "N/A"
+                    ? project.progress
+                    : '<span class="text-muted">N/A</span>';
+
+                var schedule = project.schedule && project.schedule !== "N/A"
+                    ? project.schedule
+                    : '<span class="text-muted">N/A</span>';
+
+                var row = document.createElement('tr');
+                row.className = "project-row";
+                row.innerHTML =
+                    '<td class="project-title">' + project.title + '</td>' +
+                    '<td>' + progress + '</td>' +
+                    '<td>' + schedule + '</td>' +
+                    '<td>' + limitations + '</td>' +
+                    '<td>' + strategy + '</td>' +
+                    '<td class="project-status">' + statusBadge + '</td>';
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Set year in footer
+        (function() {
+            var yearSpan = document.getElementById('year');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+        })();
+
+        renderSectionCanvases();
+    </script>
 </body>
 </html>
